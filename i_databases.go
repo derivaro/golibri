@@ -2,6 +2,7 @@ package ooo
 
 import (
 	"database/sql"
+	sqlLib "database/sql"
 	"fmt"
 	"io/ioutil"
 	"log"
@@ -68,22 +69,55 @@ func SetBases(root string) map[string]string {
 
 func Rsql(sql string, databaseConnectiontring string) int {
 	db := openDb("postgres", databaseConnectiontring)
-	ue := 0
-	rows, er := db.Query(sql)
-	if er != nil {
-		//1146 : table does not exist
-		ue = -1
-		fmt.Println("rSQL->", er.Error())
-		fmt.Println(sql)
-		db.Close()
-		return ue
+	var rows *sqlLib.Rows
+	var er error
+
+	if db != nil {
+		ue := 0
+		rows, er = db.Query(sql)
+		if er != nil {
+			ue = -1
+			fmt.Println("rSQL->", er.Error())
+			fmt.Println(sql)
+			rows.Close()
+			db.Close()
+			return ue
+		} else {
+			fmt.Println("error connecting database")
+			return -1
+		}
 	}
-	rows.Close()
-	defer db.Close()
-	return ue
+	defer rows.Close()
+	db.Close()
+	return 0
 }
 
 func RsqlFile(fileName string, databaseConnectiontring string) int {
+	db := openDb("postgres", databaseConnectiontring)
+	var rows *sqlLib.Rows
+	var er error
+	sql := RFi(fileName)
+	if db != nil {
+		ue := 0
+		rows, er = db.Query(sql)
+		if er != nil {
+			ue = -1
+			fmt.Println("rSQL->", er.Error())
+			fmt.Println(sql)
+			rows.Close()
+			db.Close()
+			return ue
+		} else {
+			fmt.Println("error connecting database")
+			return -1
+		}
+	}
+	defer rows.Close()
+	db.Close()
+	return 0
+}
+
+func deprecated_rsqlFile(fileName string, databaseConnectiontring string) int {
 	db := openDb("postgres", databaseConnectiontring)
 	ue := 0
 	sql := RFi(fileName)
