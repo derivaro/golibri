@@ -15,15 +15,6 @@ import (
 
 var OSVARENV map[string]string
 
-func openDb(baseType string, databaseConnectiontring string) *sql.DB {
-
-	dbb, errb := sql.Open(baseType, databaseConnectiontring)
-	if errb != nil {
-		return nil
-	}
-	return dbb
-}
-
 func RepVarEnv(root string, src string) string {
 	if OSVARENV == nil {
 		OSVARENV = make(map[string]string, 10)
@@ -110,7 +101,7 @@ func RsqlFile(fileName string, databaseConnectiontring string) int {
 	return ue
 }
 
-func dsql(baseType string, conn string, Sql string) (*Datset, string) {
+func Dsql(baseType string, conn string, Sql string) (*Datset, string) {
 	var DS Datset
 	DS.ColsCount = 0
 	stcountRows := `
@@ -216,10 +207,6 @@ func dsql(baseType string, conn string, Sql string) (*Datset, string) {
 	return &DS, ""
 }
 
-func Dsql(baseType string, databaseConnectiontring string, Sql string) (*Datset, string) {
-	return dsql(baseType, databaseConnectiontring, Sql)
-}
-
 func (dt *Datset) SetCols() {
 	if dt.ColsCount > 0 {
 		dt.C = make(map[string]int, dt.ColsCount)
@@ -227,4 +214,13 @@ func (dt *Datset) SetCols() {
 			dt.C[dt.Cols.FI[u]] = u
 		}
 	}
+}
+
+func openDb(baseType string, databaseConnectiontring string) *sql.DB {
+
+	dbb, errb := sql.Open(baseType, databaseConnectiontring)
+	if errb != nil {
+		return nil
+	}
+	return dbb
 }
