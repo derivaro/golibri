@@ -1,4 +1,4 @@
-module golibri
+module github.com/derivaro/golibri
 
 go 1.19
 
