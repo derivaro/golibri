@@ -74,7 +74,6 @@ func SetBases(root string) map[string]string {
 func Rsql(sql string, databaseConnectiontring string) int {
 	db := openDb("postgres", databaseConnectiontring)
 	var rows *sqlLib.Rows
-
 	var er error
 	ue := 0
 	if db != nil {
@@ -100,44 +99,26 @@ func Rsql(sql string, databaseConnectiontring string) int {
 func RsqlFile(fileName string, databaseConnectiontring string) int {
 	db := openDb("postgres", databaseConnectiontring)
 	var rows *sqlLib.Rows
+	sql := RFi(fileName)
 	var er error
 	ue := 0
-	sql := RFi(fileName)
 	if db != nil {
-
+		defer db.Close()
 		rows, er = db.Query(sql)
 		if er != nil {
 			ue = -1
 			fmt.Println("rSQL->", er.Error())
 			fmt.Println(sql)
-			//rows.Close()
-			//db.Close()
-
-		} else {
-			fmt.Println("error connecting database")
 			ue = -1
-		}
-	}
-	defer rows.Close()
-	db.Close()
-	return ue
-}
+		} else {
+			defer rows.Close()
 
-func deprecated_rsqlFile(fileName string, databaseConnectiontring string) int {
-	db := openDb("postgres", databaseConnectiontring)
-	ue := 0
-	sql := RFi(fileName)
-	rows, er := db.Query(sql)
-	if er != nil {
-		//1146 : table does not exist
+		}
+	} else {
+		fmt.Println("error connecting database")
 		ue = -1
-		fmt.Println("rSQL->", er.Error())
-		fmt.Println(sql)
-		db.Close()
-		return ue
 	}
-	rows.Close()
-	defer db.Close()
+
 	return ue
 }
 
