@@ -26,7 +26,7 @@ func openDb(baseType string, databaseConnectiontring string) *sql.DB {
 
 func RepVarEnv(root string, src string) string {
 	if OSVARENV == nil {
-		OSVARENV = make(map[string]string, 30)
+		OSVARENV = make(map[string]string, 10)
 		yfile, err := ioutil.ReadFile(root + "/config.yaml")
 		if err != nil {
 			log.Fatal(err)
