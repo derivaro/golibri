@@ -71,50 +71,51 @@ func Rsql(sql string, databaseConnectiontring string) int {
 	db := openDb("postgres", databaseConnectiontring)
 	var rows *sqlLib.Rows
 	var er error
-
+	ue := 0
 	if db != nil {
-		ue := 0
+
 		rows, er = db.Query(sql)
 		if er != nil {
 			ue = -1
 			fmt.Println("rSQL->", er.Error())
 			fmt.Println(sql)
-			rows.Close()
-			db.Close()
-			return ue
+			//rows.Close()
+			//db.Close()
+			ue = -1
 		} else {
 			fmt.Println("error connecting database")
-			return -1
+			ue = -1
 		}
 	}
 	defer rows.Close()
 	db.Close()
-	return 0
+	return ue
 }
 
 func RsqlFile(fileName string, databaseConnectiontring string) int {
 	db := openDb("postgres", databaseConnectiontring)
 	var rows *sqlLib.Rows
 	var er error
+	ue := 0
 	sql := RFi(fileName)
 	if db != nil {
-		ue := 0
+
 		rows, er = db.Query(sql)
 		if er != nil {
 			ue = -1
 			fmt.Println("rSQL->", er.Error())
 			fmt.Println(sql)
-			rows.Close()
-			db.Close()
-			return ue
+			//rows.Close()
+			//db.Close()
+
 		} else {
 			fmt.Println("error connecting database")
-			return -1
+			ue = -1
 		}
 	}
 	defer rows.Close()
 	db.Close()
-	return 0
+	return ue
 }
 
 func deprecated_rsqlFile(fileName string, databaseConnectiontring string) int {
