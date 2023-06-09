@@ -79,20 +79,19 @@ func Rsql(sql string, databaseConnectiontring string) int {
 	if db != nil {
 
 		rows, er = db.Query(sql)
+		defer rows.Close()
+		defer db.Close()
 		if er != nil {
 			ue = -1
 			fmt.Println("rSQL->", er.Error())
 			fmt.Println(sql)
-			//rows.Close()
-			//db.Close()
 			ue = -1
 		} else {
 			fmt.Println("error connecting database")
 			ue = -1
 		}
 	}
-	defer rows.Close()
-	db.Close()
+
 	return ue
 }
 
