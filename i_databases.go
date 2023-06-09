@@ -74,13 +74,12 @@ func SetBases(root string) map[string]string {
 func Rsql(sql string, databaseConnectiontring string) int {
 	db := openDb("postgres", databaseConnectiontring)
 	var rows *sqlLib.Rows
+	defer rows.Close()
+	defer db.Close()
 	var er error
 	ue := 0
 	if db != nil {
-
 		rows, er = db.Query(sql)
-		defer rows.Close()
-		defer db.Close()
 		if er != nil {
 			ue = -1
 			fmt.Println("rSQL->", er.Error())
