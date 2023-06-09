@@ -16,6 +16,10 @@ import (
 
 var OSVARENV map[string]string
 
+func Version() {
+	fmt.Println("cool version v0.1.9")
+}
+
 func RepVarEnv(root string, src string) string {
 	if OSVARENV == nil {
 		OSVARENV = make(map[string]string, 10)
