@@ -113,10 +113,7 @@ func Dsql(d database, Sql string) (*Datset, string) {
 	conn := d.Url
 	var DS Datset
 	DS.ColsCount = 0
-	stcountRows := `
-	select count(*) from (
-		` + Rep(Sql, ";", "") + `
-	                     ) aaaaaa123456789zzzzz;`
+	stcountRows := fmt.Sprintf("SELECT COUNT(*) FROM (\n %s \n) PrepCountLinesNumber", Rep(Sql, ";", ""))
 	var countRows int
 	db := openDb(baseType, conn)
 	er1 := db.QueryRow(stcountRows).Scan(&countRows)
