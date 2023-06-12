@@ -28,7 +28,7 @@ type Datset struct {
 	Ptyps     *Row
 }
 
-func (DS *Datset) SnowflakeColumnsConvert() {
+func (DS *Datset) SnowColsConv() {
 
 	var j int
 	for j = 0; j < DS.ColsCount; j++ {
