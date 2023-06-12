@@ -29,6 +29,8 @@ func RepVenv(repo string, src string) string {
 			log.Fatal(err2)
 		}
 		//	fmt.Println(data)
+		fmt.Println(len(data))
+
 		for _, v := range data {
 			for _, gg := range v.Keys {
 				OSVARENV[gg] = OSENV(gg)
