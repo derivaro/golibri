@@ -1,4 +1,4 @@
-package ooo
+package golibri
 
 import (
 	"bufio"

@@ -1,4 +1,4 @@
-package ooo
+package golibri
 
 type varenvs struct {
 	Keys      []string   `yaml:"keys"`
