@@ -49,7 +49,7 @@ func RepVarEnv(repo string, src string) string {
 }
 
 func SetBases(repo string) *map[string]database {
-	var dbs map[string]database
+	dbs := make(map[string]database, 20)
 	yfile, err := ioutil.ReadFile(repo + "/" + "config.yaml")
 	if err != nil {
 		log.Fatal(err)
