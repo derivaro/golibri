@@ -72,12 +72,12 @@ func SetBases(repo string) *map[string]database {
 	return &dbs
 }
 
-func Rsql(d *database, sql string) int {
+func Rsql(d database, sql string) int {
 	return rsql(sql, d.Url, d.Typ)
 
 }
 
-func RsqlFi(d *database, fileName string) int {
+func RsqlFi(d database, fileName string) int {
 	sql := RFi(fileName)
 
 	return rsql(sql, d.Url, d.Typ)
