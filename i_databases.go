@@ -143,16 +143,17 @@ func Dsql(baseType string, conn string, Sql string) (*Datset, string) {
 
 	cols, _ := rows.Columns()
 	colTypes, _ := rows.ColumnTypes()
+	DS.ColsCount = len(cols)
 
 	var ColFi Row
 	var TypFi Row
 	var GTypFi Row
 	var PTypFi Row
 
-	ColFi.FI = make([]string, len(cols))
-	TypFi.FI = make([]string, len(cols))
-	GTypFi.FI = make([]string, len(cols))
-	PTypFi.FI = make([]string, len(cols))
+	ColFi.FI = make([]string, DS.ColsCount)
+	TypFi.FI = make([]string, DS.ColsCount)
+	GTypFi.FI = make([]string, DS.ColsCount)
+	PTypFi.FI = make([]string, DS.ColsCount)
 
 	DS.Cols = &ColFi
 	DS.Typs = &TypFi
