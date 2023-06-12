@@ -108,7 +108,7 @@ func rsql(sql string, databaseConnectiontring string, dbtyp string) int {
 	return ue
 }
 
-func Dsql(d *database, Sql string) (*Datset, string) {
+func Dsql(d database, Sql string) (*Datset, string) {
 	baseType := d.Typ
 	conn := d.Url
 	var DS Datset
