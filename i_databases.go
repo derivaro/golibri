@@ -16,7 +16,7 @@ import (
 
 var OSVARENV map[string]string
 
-func RepVarEnv(repo string, src string) string {
+func RepVenv(repo string, src string) string {
 	if OSVARENV == nil {
 		OSVARENV = make(map[string]string, 10)
 		yfile, err := ioutil.ReadFile(repo + "/config.yaml")
@@ -65,7 +65,7 @@ func SetBases(repo string) *map[string]database {
 			dd := database{}
 			dd.Name = gg.Name
 			dd.Typ = gg.Typ
-			dd.Url = RepVarEnv(repo, gg.Url)
+			dd.Url = RepVenv(repo, gg.Url)
 			dbs[alias] = dd
 		}
 	}
