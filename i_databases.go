@@ -48,8 +48,8 @@ func RepVarEnv(repo string, src string) string {
 	return src0
 }
 
-func SetBases(repo string) map[string]string {
-	databaseConnection := map[string]string{}
+func SetBases(repo string) *map[string]database {
+	var dbs map[string]database
 	yfile, err := ioutil.ReadFile(repo + "/" + "config.yaml")
 	if err != nil {
 		log.Fatal(err)
@@ -61,41 +61,31 @@ func SetBases(repo string) map[string]string {
 	}
 	for _, v := range data {
 		for _, gg := range v.Databases {
-			databaseConnection[gg.Name] = RepVarEnv(repo, gg.Url)
+			alias := gg.Name
+			dd := database{}
+			dd.Name = gg.Name
+			dd.Typ = gg.Typ
+			dd.Url = RepVarEnv(repo, gg.Url)
+			dbs[alias] = dd
 		}
 	}
-	return databaseConnection
+	return &dbs
 }
 
-func Rsql(sql string, databaseConnectiontring string) int {
-	db := openDb("postgres", databaseConnectiontring)
-	var rows *sqlLib.Rows
-	var er error
-	ue := 0
-	if db != nil {
-		defer db.Close()
-		rows, er = db.Query(sql)
-		if er != nil {
-			ue = -1
-			fmt.Println("rSQL->", er.Error())
-			fmt.Println(sql)
-			ue = -1
-		} else {
-			defer rows.Close()
+func Rsql(d *database, sql string) int {
+	return rsql(sql, d.Url, d.Typ)
 
-		}
-	} else {
-		fmt.Println("error connecting database")
-		ue = -1
-	}
-
-	return ue
 }
 
-func RsqlFi(fileName string, databaseConnectiontring string) int {
-	db := openDb("postgres", databaseConnectiontring)
-	var rows *sqlLib.Rows
+func RsqlFi(d *database, fileName string) int {
 	sql := RFi(fileName)
+
+	return rsql(sql, d.Url, d.Typ)
+}
+
+func rsql(sql string, databaseConnectiontring string, dbtyp string) int {
+	db := openDb(dbtyp, databaseConnectiontring)
+	var rows *sqlLib.Rows
 	var er error
 	ue := 0
 	if db != nil {
@@ -118,9 +108,10 @@ func RsqlFi(fileName string, databaseConnectiontring string) int {
 	return ue
 }
 
-func Dsql(baseType string, conn string, Sql string) (*Datset, string) {
+func Dsql(d *database, Sql string) (*Datset, string) {
+	baseType := d.Typ
+	conn := d.Url
 	var DS Datset
-
 	DS.ColsCount = 0
 	stcountRows := `
 	select count(*) from (
