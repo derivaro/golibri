@@ -31,8 +31,8 @@ func main() {
 
 envName:
   keys:
-	- VARENV1
-	- VARENV2
+    - VARENV1
+    - VARENV2
   databases:
     - name: databasealias1
       url: >-
