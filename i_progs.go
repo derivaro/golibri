@@ -8,7 +8,7 @@ import (
 	"os/exec"
 )
 
-func RunProg(argus ...string) (int, string) {
+func Rprog(argus ...string) (int, string) {
 	var cmd *exec.Cmd
 	oldstdout := os.Stdout
 
