@@ -34,7 +34,6 @@ func RepVenv(repo string, src string) string {
 			for _, gg := range v.Keys {
 				OSVARENV[gg] = OSENV(gg)
 			}
-
 		}
 	}
 	src0 := src
@@ -50,7 +49,7 @@ func RepVenv(repo string, src string) string {
 }
 
 func SetBases(repo string) *map[string]database {
-	dbs := make(map[string]database, 20)
+
 	yfile, err := ioutil.ReadFile(repo + "/" + "config.yaml")
 	if err != nil {
 		log.Fatal(err)
@@ -60,6 +59,8 @@ func SetBases(repo string) *map[string]database {
 	if err2 != nil {
 		log.Fatal(err2)
 	}
+
+	dbs := make(map[string]database, len(data))
 	for _, v := range data {
 		for _, gg := range v.Databases {
 			alias := gg.Name
