@@ -44,7 +44,6 @@ func RepVenv(repo string, src string) string {
 			}
 		}
 	}
-
 	return src0
 }
 
@@ -81,7 +80,6 @@ func Rsql(d database, sql string) int {
 
 func RsqlFi(d database, fileName string) int {
 	sql := RFi(fileName)
-
 	return rsql(sql, d.Url, d.Typ)
 }
 
@@ -118,8 +116,7 @@ func Dsql(d database, Sql string) (*Datset, string) {
 	stcountRows := `
 	select count(*) from (
 		` + Rep(Sql, ";", "") + `
-	                     ) a123456789z;`
-	// to avoid accidental escape
+	                     ) aaaaaa123456789zzzzz;`
 	var countRows int
 	db := openDb(baseType, conn)
 	er1 := db.QueryRow(stcountRows).Scan(&countRows)
