@@ -14,11 +14,10 @@ import (
 	"gopkg.in/yaml.v3"
 )
 
-var OSVARENV map[string]string
+var OSvarEnv map[string]string
 
 func RepVenv(repo string, src string) string {
-	if OSVARENV == nil {
-
+	if OSvarEnv == nil {
 		yfile, err := ioutil.ReadFile(repo + "/config.yaml")
 		if err != nil {
 			log.Fatal(err)
@@ -29,16 +28,16 @@ func RepVenv(repo string, src string) string {
 			log.Fatal(err2)
 		}
 		//	fmt.Println(data)
-		OSVARENV = make(map[string]string, len(data))
+		OSvarEnv = make(map[string]string, len(data))
 		for _, v := range data {
 			for _, gg := range v.Keys {
-				OSVARENV[gg] = OSENV(gg)
+				OSvarEnv[gg] = osEnv(gg)
 			}
 		}
 	}
 	src0 := src
 	if Rep(src0, "$", "") != src {
-		for k, v := range OSVARENV {
+		for k, v := range OSvarEnv {
 			if len(k) > 1 {
 				src0 = Rep(src0, "$"+k, v)
 			}
@@ -75,7 +74,6 @@ func SetBases(repo string) *map[string]database {
 
 func Rsql(d database, sql string) int {
 	return rsql(sql, d.Url, d.Typ)
-
 }
 
 func RsqlFi(d database, fileName string) int {

@@ -156,7 +156,7 @@ func GetFilesInfo(fold string) []os.FileInfo {
 	return fso
 }
 
-func OSENV(key string) string {
+func osEnv(key string) string {
 	vv := Rep(os.Getenv(key), `"`, ``)
 
 	//to put default value if keyenv is forgotten
