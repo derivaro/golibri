@@ -13,9 +13,8 @@ import (
 )
 
 func main() {
-
-	dbs := e.SetBases(".")
-	dt, sterr := e.Dsql(&dbs["databasealias1"], "select * from table limit 10;")
+	bases := e.SetBases(".")
+	dt, sterr := e.Dsql((*bases)["databasealias1"], "select * from table limit 10;")
 	if sterr != "" {
 		fmt.Println(sterr)
 	}
