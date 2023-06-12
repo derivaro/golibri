@@ -1,7 +1,5 @@
 package ooo
 
-const CMax = 120
-
 type varenvs struct {
 	Keys      []string   `yaml:"keys"`
 	Databases []database `yaml:"databases"`
@@ -14,7 +12,7 @@ type database struct {
 }
 
 type Row struct {
-	FI [CMax]string
+	FI []string
 	Id string
 }
 
@@ -22,13 +20,12 @@ type Datset struct {
 	Name      string
 	ColsCount int
 	RowsCount int
-	Cols      Row
-	Typs      Row
-	Gtyps     Row
-	Rows      []Row
+	Cols      *Row
+	Typs      *Row
+	Gtyps     *Row
+	Rows      *[]Row
 	C         map[string]int
-	Ptyps     Row
-	Deco      Row
+	Ptyps     *Row
 }
 
 func (DS *Datset) SnowflakeColumnsConvert() {

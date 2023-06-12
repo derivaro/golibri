@@ -16,14 +16,10 @@ import (
 
 var OSVARENV map[string]string
 
-func Version() {
-	fmt.Println("cool version v0.1.9")
-}
-
-func RepVarEnv(root string, src string) string {
+func RepVarEnv(repo string, src string) string {
 	if OSVARENV == nil {
 		OSVARENV = make(map[string]string, 10)
-		yfile, err := ioutil.ReadFile(root + "/config.yaml")
+		yfile, err := ioutil.ReadFile(repo + "/config.yaml")
 		if err != nil {
 			log.Fatal(err)
 		}
@@ -52,9 +48,9 @@ func RepVarEnv(root string, src string) string {
 	return src0
 }
 
-func SetBases(root string) map[string]string {
+func SetBases(repo string) map[string]string {
 	databaseConnection := map[string]string{}
-	yfile, err := ioutil.ReadFile(root + "/" + "config.yaml")
+	yfile, err := ioutil.ReadFile(repo + "/" + "config.yaml")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -65,7 +61,7 @@ func SetBases(root string) map[string]string {
 	}
 	for _, v := range data {
 		for _, gg := range v.Databases {
-			databaseConnection[gg.Name] = RepVarEnv(root, gg.Url)
+			databaseConnection[gg.Name] = RepVarEnv(repo, gg.Url)
 		}
 	}
 	return databaseConnection
@@ -96,7 +92,7 @@ func Rsql(sql string, databaseConnectiontring string) int {
 	return ue
 }
 
-func RsqlFile(fileName string, databaseConnectiontring string) int {
+func RsqlFi(fileName string, databaseConnectiontring string) int {
 	db := openDb("postgres", databaseConnectiontring)
 	var rows *sqlLib.Rows
 	sql := RFi(fileName)
@@ -124,6 +120,7 @@ func RsqlFile(fileName string, databaseConnectiontring string) int {
 
 func Dsql(baseType string, conn string, Sql string) (*Datset, string) {
 	var DS Datset
+
 	DS.ColsCount = 0
 	stcountRows := `
 	select count(*) from (
@@ -143,13 +140,25 @@ func Dsql(baseType string, conn string, Sql string) (*Datset, string) {
 	}
 	defer rows.Close()
 	defer db.Close()
+
 	cols, _ := rows.Columns()
 	colTypes, _ := rows.ColumnTypes()
-	if len(cols) > CMax {
-		DS.ColsCount = CMax
-	} else {
-		DS.ColsCount = len(cols)
-	}
+
+	var ColFi Row
+	var TypFi Row
+	var GTypFi Row
+	var PTypFi Row
+
+	ColFi.FI = make([]string, len(cols))
+	TypFi.FI = make([]string, len(cols))
+	GTypFi.FI = make([]string, len(cols))
+	PTypFi.FI = make([]string, len(cols))
+
+	DS.Cols = &ColFi
+	DS.Typs = &TypFi
+	DS.Gtyps = &GTypFi
+	DS.Ptyps = &PTypFi
+
 	var j int
 	for j = 0; j < DS.ColsCount; j++ {
 		DS.Cols.FI[j] = cols[j]
@@ -185,6 +194,7 @@ func Dsql(baseType string, conn string, Sql string) (*Datset, string) {
 	}
 	for rows.Next() {
 		r := Row{}
+		r.FI = make([]string, len(cols))
 		rows.Scan(values...)
 		for i, colName := range columns {
 			var raw_value = *(values[i].(*interface{}))
@@ -220,7 +230,7 @@ func Dsql(baseType string, conn string, Sql string) (*Datset, string) {
 			break
 		}
 	}
-	DS.Rows = tt
+	DS.Rows = &tt
 	DS.RowsCount = countRows
 	DS.SetCols()
 
