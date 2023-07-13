@@ -1,3 +1,3 @@
 
-../gitpush.sh $1
+.gitpush $1
 ./.register $1
