@@ -27,7 +27,7 @@ func RepVenv(repo string, src string) string {
 		if err2 != nil {
 			log.Fatal(err2)
 		}
-		//	fmt.Println(data)
+		fmt.Println(data)
 		OSvarEnv = make(map[string]string, len(data))
 		for _, v := range data {
 			for _, gg := range v.Keys {
