@@ -4,9 +4,11 @@ import (
 	"bufio"
 	"bytes"
 	"fmt"
+	"hash/crc32"
 	"io/ioutil"
 	"net"
 	"os"
+	"strconv"
 	"strings"
 	"sync"
 	"time"
@@ -210,5 +212,15 @@ func SetDuration(hh int64, mm int64, ss int64) string {
 
 	ti := time.Now().Local().Add(time.Hour*time.Duration(hh) + time.Minute*time.Duration(mm) + time.Second*time.Duration(ss))
 	return ti.Format("20060102150405")
+
+}
+
+func TimeUnix() string {
+
+	return strconv.FormatInt(time.Now().Unix(), 10)
+}
+
+func ChK(s string) string {
+	return strconv.FormatUint(uint64(crc32.Checksum([]byte(s), crc32.MakeTable(0xD5828281))), 10)
 
 }
