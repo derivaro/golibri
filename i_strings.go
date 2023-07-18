@@ -200,3 +200,15 @@ func Yyyymmdd1() string {
 	//	time.Now().Format("2006-01-02 15:04:05")
 	return time.Now().AddDate(0, 0, -1).Format("20060102")
 }
+
+func TimeStamp() string {
+	return time.Now().Format("2006-01-02 15:04:05")
+
+}
+
+func SetDuration(hh int64, mm int64, ss int64) string {
+
+	ti := time.Now().Local().Add(time.Hour*time.Duration(hh) + time.Minute*time.Duration(mm) + time.Second*time.Duration(ss))
+	return ti.Format("20060102150405")
+
+}
