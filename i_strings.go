@@ -171,3 +171,32 @@ func osEnv(key string) string {
 
 	return vv
 }
+
+func lpad(s string, pad string, plength int) string {
+	for i := len(s); i < plength; i++ {
+		s = pad + s
+	}
+	return s
+}
+
+func Pad5(s string) string {
+	return lpad(s, "0", 5)
+
+}
+func Pad3(s string) string {
+	return lpad(s, "0", 3)
+
+}
+func Pad2(s string) string {
+	return lpad(s, "0", 2)
+
+}
+func Yyyymmdd() string {
+	//	time.Now().Format("2006-01-02 15:04:05")
+	return time.Now().Format("20060102")
+}
+
+func Yyyymmdd1() string {
+	//	time.Now().Format("2006-01-02 15:04:05")
+	return time.Now().AddDate(0, 0, -1).Format("20060102")
+}
