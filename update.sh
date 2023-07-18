@@ -8,9 +8,13 @@ git add *
 git add .
 git commit -m "update $1"
 git tag $1
-git push origin $1
 
+git push origin $1
 git push origin head
+
+git checkout
+git merge origin master
+
 go list -m github.com/derivaro/golibri@$1
 echo "done"
 fi
