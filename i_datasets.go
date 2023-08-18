@@ -2,10 +2,10 @@ package golibri
 
 type varenvs struct {
 	Keys      []string   `yaml:"keys"`
-	Databases []database `yaml:"databases"`
+	Databases []Database `yaml:"databases"`
 }
 
-type database struct {
+type Database struct {
 	Name string `yaml:"name"`
 	Url  string `yaml:"url"`
 	Typ  string `yaml:"typ"`

@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"log"
+	"os"
 	"reflect"
 	"strconv"
 	"time"
@@ -18,7 +19,7 @@ var OSvarEnv map[string]string
 
 func RepVenv(repo string, src string) string {
 	if OSvarEnv == nil {
-		yfile, err := ioutil.ReadFile(repo + "/config.yaml")
+		yfile, err := os.ReadFile(repo + "/config.yaml")
 		if err != nil {
 			log.Fatal(err)
 		}
@@ -46,7 +47,7 @@ func RepVenv(repo string, src string) string {
 	return src0
 }
 
-func SetBases(repo string) *map[string]database {
+func SetBases(repo string) *map[string]Database {
 
 	yfile, err := ioutil.ReadFile(repo + "/" + "config.yaml")
 	if err != nil {
@@ -58,11 +59,11 @@ func SetBases(repo string) *map[string]database {
 		log.Fatal(err2)
 	}
 
-	dbs := make(map[string]database, len(data))
+	dbs := make(map[string]Database, len(data))
 	for _, v := range data {
 		for _, gg := range v.Databases {
 			alias := gg.Name
-			dd := database{}
+			dd := Database{}
 			dd.Name = gg.Name
 			dd.Typ = gg.Typ
 			dd.Url = RepVenv(repo, gg.Url)
@@ -72,11 +73,11 @@ func SetBases(repo string) *map[string]database {
 	return &dbs
 }
 
-func Rsql(d database, sql string) int {
+func Rsql(d Database, sql string) int {
 	return rsql(sql, d.Url, d.Typ)
 }
 
-func RsqlFi(d database, fileName string) int {
+func RsqlFi(d Database, fileName string) int {
 	sql := RFi(fileName)
 	return rsql(sql, d.Url, d.Typ)
 }
@@ -106,7 +107,7 @@ func rsql(sql string, databaseConnectiontring string, dbtyp string) int {
 	return ue
 }
 
-func Dsql(d database, Sql string) (*Datset, string) {
+func Dsql(d Database, Sql string) (*Datset, string) {
 	baseType := d.Typ
 	conn := d.Url
 	var DS Datset
